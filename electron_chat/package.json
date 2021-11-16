@@ -5,9 +5,10 @@
   "main": ".tmp/main/index.js",
   "dependencies": {
     "electron": "^1.6.1",
+    "firebase": "^3.6.4",
     "photon": "^0.1.2",
-    "react-dom": "^15.4.2",
     "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "react-router": "^3.0.0"
   },
   "devDependencies": {
