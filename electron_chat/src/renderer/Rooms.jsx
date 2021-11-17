@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import RoomItem from './RoomItem';
-import firebase from 'firebase/firebase-browser';
+import firebase from 'firebase/firebase-browser'; 
 
 const ICON_CHAT_STYLE = {
   fontSize: 120,
