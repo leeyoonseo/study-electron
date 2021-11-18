@@ -1,0 +1,25 @@
+{
+  "chatrooms" : {
+    "-KMTZS-bbjFZsoEEi9u4s": {
+      "description": "Electron에 대해 이야기해봐요.",
+      "message": {
+        "-KMT_to-J_2fFtR3GTdF": {
+          "text": "시작해봐요!",
+          "time": 1468318326087,
+          "writtenBy": {
+            "displayName": "Noguchi",
+            "uid": "DgaimcP{VZPQirzjqQpRG6klhZ5G3"
+          }
+        },
+        "-KMTaEGHiz3z5hcDl_f1": {
+          "text": "잘 부탁해요.",
+          "time": 1468318413981,
+          "writtenBy": {
+            "displayName:": "Kurami",
+            "uid": "sPgLz32AFceSjM6fb15G7aFdamD3"
+          }
+        }
+      }
+    }
+  }
+}
