@@ -29,6 +29,7 @@ if (!location.hash.length) {
 const firebaseConfig = {
   apiKey: "AIzaSyD3nQ1txM8LEsgqT-HTjajWRr9kgJuHt2o",
   authDomain: "electron-chat-d61bc.firebaseapp.com",
+  databaseURL: "https://electron-chat-d61bc-default-rtdb.firebaseio.com/",
   projectId: "electron-chat-d61bc",
   storageBucket: "electron-chat-d61bc.appspot.com",
   messagingSenderId: "865418066567",
