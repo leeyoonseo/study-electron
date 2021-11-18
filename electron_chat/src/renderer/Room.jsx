@@ -51,15 +51,15 @@ class Room extends Component {
     }, 0);
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     if (this.stream) {
       // 메시지 감시 제거하기
       this.stream.off();
     }
   }
 
-  handleMessagePost() {
-    const newItemRef = this.fbChatRoomRef.child('message').push();
+  handleMessagePost(message) {
+    const newItemRef = this.fbChatRoomRef.child('messages').push();
     // Firebase에 로그인한 사용자를 입력 사용자로 사용하기
     this.user = this.user || firebase.auth().currentUser;
     return newItemRef.update({
@@ -87,7 +87,7 @@ class Room extends Component {
     this.stream.on('child_added', item => {
       const { messages } = this.state || [];
       // 추가된 메세지를 state에 할당
-      messages.push(Object.assign({ key: item }, item.val()));
+      messages.push(Object.assign({ key: item.key }, item.val()));
       this.setState({ messages });
     });
   }

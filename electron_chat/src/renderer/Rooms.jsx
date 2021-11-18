@@ -111,7 +111,8 @@ class Rooms extends Component {
               value={roomName}
             />
             <button className="btn btn-default" style={BUTTON_STYLE}>
-              <span className="icon ico-plus" />
+              {/* <span className="icon ico-plus" /> */}
+              +
             </button>
           </form>
         </div>
@@ -128,6 +129,7 @@ class Rooms extends Component {
         <div className="text-center">
           <div style={ICON_CHAT_STYLE}>
             <span className="icon icon-chat" />
+            Chat
           </div>
           <p>
             Join a chat room from the sidebar or create your chat room.
