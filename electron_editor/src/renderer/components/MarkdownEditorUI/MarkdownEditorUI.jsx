@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Editor from '../Editor/Editor';
+import Previewer from '../Previewer/Previewer';
 import style from './MarkdownEditorUI.css';
 
 class MarkdownEditorUI extends Component {
@@ -24,6 +25,10 @@ class MarkdownEditorUI extends Component {
           className={style.editorArea}
           value={this.state.text}
           onChange={this.onChangeText}
+        />
+        <Previewer 
+          className={style.PreviewerArea}
+          value={this.state.text}
         />
       </div>
     );
