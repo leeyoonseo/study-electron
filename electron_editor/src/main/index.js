@@ -8,7 +8,38 @@ import showOpenFileDialog from './showOpenFileDialog';
 let mainWindow = null;
 let fileManager = null;
 
+function openFile() {
+  showOpenFileDialog()
+    .then((filePath) => {
+      fileManager.readFile(filePath);
+    })
+    .then((text) => {
+      mainWindow.sendText(text)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+}
 
+function saveFile() {
+  console.log('saveFile');
+}
+
+function saveAsNewFile() {
+  Promise.all([
+    showSaveAsNewFileDialog(),
+    mainWindow.requestText()
+  ]).then(([filePath, text]) => {
+    fileManager.saveFile(filePath, text);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+function exportPDF() {
+  console.log('exportPDF');
+}
 
 app.on('ready', () => {
   mainWindow = createMainWindow();
@@ -33,36 +64,3 @@ app.on('activate', (_, hasVisibleWindow) => {
     mainWindow = createMainWindow();
   }
 });
-
-function openFile() {
-  if (app.isReady()) {
-    showOpenFileDialog()
-      .then((filePath) => {
-        fileManager.readFile(filePath);
-      })
-      .then((text) => {
-        mainWindow.sendText(text);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-}
-
-function saveFile() {
-  console.log('saveFile');
-}
-
-function saveAsNewFile() {
-  Promise.all([
-    showSaveAsNewFileDialog(),
-    mainWindow.requestText()
-  ]).then(([filePath, text]) => fileManager.saveFile(filePath, text))
-  .catch((error) => {
-    console.log(error);
-  });
-}
-
-function exportPDF() {
-  console.log('exportPDF');
-}
