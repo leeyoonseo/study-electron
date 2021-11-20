@@ -1,10 +1,11 @@
 import { app } from 'electron';
-import creatMainWindow from './creatMainWindow';
+// import creatMainWindow from './creatMainWindow';
+import createMainWindow from './createMainWindow';
 
 let mainWindow = null;
 
 app.on('ready', () => {
-  mainWindow = creatMainWindow();
+  mainWindow = createMainWindow();
 });
 
 app.on('window-all-closed', () => {
@@ -15,6 +16,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', (_, hasVisibleWindow) => {
   if (!hasVisibleWindow) {
-    mainWindow = creatMainWindow();
+    mainWindow = createMainWindow();
   }
 });
