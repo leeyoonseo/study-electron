@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import MarkdownEditorUI from './components/MarkdownEditorUI/MarkdownEditorUI';
 
 const app = document.getElementById('app');
-render(<div>Hello, Electron and React JSX</div>, app);
+render(<MarkdownEditorUI />, app);

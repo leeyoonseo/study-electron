@@ -63,31 +63,39 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 178);
+/******/ 	return __webpack_require__(__webpack_require__.s = 187);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 178:
+/***/ 187:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _electron = __webpack_require__(51);
+var _electron = __webpack_require__(31);
 
-var _createMainWindow = __webpack_require__(79);
+var _createMainWindow = __webpack_require__(82);
 
 var _createMainWindow2 = _interopRequireDefault(_createMainWindow);
+
+var _setAppMenu = __webpack_require__(83);
+
+var _setAppMenu2 = _interopRequireDefault(_setAppMenu);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mainWindow = null;
-// import creatMainWindow from './creatMainWindow';
-
 
 _electron.app.on('ready', function () {
   mainWindow = (0, _createMainWindow2.default)();
+  (0, _setAppMenu2.default)({
+    openFile: openFile,
+    saveFile: saveFile,
+    saveAsNewFile: saveAsNewFile,
+    exportPDF: exportPDF
+  });
 });
 
 _electron.app.on('window-all-closed', function () {
@@ -102,16 +110,32 @@ _electron.app.on('activate', function (_, hasVisibleWindow) {
   }
 });
 
+function openFile() {
+  console.log('openFile');
+}
+
+function saveFile() {
+  console.log('saveFile');
+}
+
+function saveAsNewFile() {
+  console.log('saveAsNewFile');
+}
+
+function exportPDF() {
+  console.log('exportPDF');
+}
+
 /***/ }),
 
-/***/ 51:
+/***/ 31:
 /***/ (function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ }),
 
-/***/ 79:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -121,7 +145,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _electron = __webpack_require__(51);
+var _electron = __webpack_require__(31);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -146,6 +170,93 @@ function createMainWindow() {
 }
 
 exports.default = createMainWindow;
+
+/***/ }),
+
+/***/ 83:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _electron = __webpack_require__(31);
+
+function setAppMenu(options) {
+  var template = [{
+    label: "File",
+    submenu: [{
+      label: 'Open',
+      accelerator: 'CmdOrCtrl+O',
+      click: function click() {
+        options.openFile();
+      }
+    }, {
+      label: 'Save',
+      accelerator: 'CmdOrCtrl+S',
+      click: function click() {
+        options.saveFile();
+      }
+    }, {
+      label: 'Save As...',
+      click: function click() {
+        options.saveAsNewFile();
+      }
+    }, {
+      label: 'Export PDF',
+      click: function click() {
+        options.exportPDF();
+      }
+    }]
+  }, {
+    label: "Edit",
+    submenu: [{
+      label: 'Copy',
+      accelerator: 'CmdOrCtrl+C',
+      role: 'copy'
+    }, {
+      label: 'Paste',
+      accelerator: 'CmdOrCtrl+V',
+      role: 'paste'
+    }, {
+      label: 'Cut',
+      accelerator: 'CmdOrCtrl+X',
+      role: 'cut'
+    }, {
+      label: 'Select All',
+      accelerator: 'CmdOrCtrl+A',
+      role: 'selectall'
+    }]
+  }, {
+    label: "View",
+    submenu: [{
+      label: 'Toggle DevTools',
+      accelerator: 'Alt+Command+I',
+      click: function click() {
+        _electron.BrowserWindow.getFocusedWindow().toggleDevTools();
+      }
+    }]
+  }];
+
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: 'MarkdownEditor',
+      submenu: [{
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click: function click() {
+          _electron.app.quit();
+        }
+      }]
+    });
+  }
+  _electron.Menu.setApplicationMenu(_electron.Menu.buildFromTemplate(template));
+}
+
+exports.default = setAppMenu;
 
 /***/ })
 
