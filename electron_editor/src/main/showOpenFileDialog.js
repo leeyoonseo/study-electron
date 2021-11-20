@@ -1,23 +1,24 @@
 import { dialog } from 'electron';
 
-function showSaveAsNewFileDialog() {
+function showOpenFileDialog() {
   return new Promise((resolve, reject) => {
-    const file = dialog.showSaveDialog({
-      title: 'save',
+    const files = dialog.showOpenDialog({
+      title: 'open',
+      properties: ['openFile'],
       filters: [
-        {
+        { 
           name: 'markdown file',
           extensions: ['md']
         }
       ]
     });
 
-    if (file) {
-      resolve(file);
+    if (files && files.length > 0) {
+      resolve(files[0]);
     } else {
       reject();
     }
   }).catch(error => console.log(error));
 }
 
-export default showSaveAsNewFileDialog;
+export default showOpenFileDialog();

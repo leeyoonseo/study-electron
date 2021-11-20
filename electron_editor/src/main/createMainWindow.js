@@ -17,7 +17,11 @@ class MainWindow{
     return new Promise((resolve) => {
       this.window.webContents.send('REQUEST_TEXT');
       ipcMain.once('REPLY_TEXT', (_, text) => resolve(text));
-    });
+    }).catch(error => console.log(error));
+  }
+
+  sendText(text) {
+    this.window.webContents.send('SEND_TEXT', text);
   }
 }
 

@@ -63,26 +63,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 194);
+/******/ 	return __webpack_require__(__webpack_require__.s = 195);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 16:
+/***/ 13:
 /***/ (function(module, exports) {
 
 module.exports = require("electron");
 
 /***/ }),
 
-/***/ 193:
+/***/ 194:
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
 
-/***/ 194:
+/***/ 195:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -90,7 +90,7 @@ module.exports = require("fs");
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _electron = __webpack_require__(16);
+var _electron = __webpack_require__(13);
 
 var _createMainWindow = __webpack_require__(83);
 
@@ -100,7 +100,7 @@ var _setAppMenu = __webpack_require__(84);
 
 var _setAppMenu2 = _interopRequireDefault(_setAppMenu);
 
-var _showSaveAsNewFileDialog = __webpack_require__(85);
+var _showSaveAsNewFileDialog = __webpack_require__(86);
 
 var _showSaveAsNewFileDialog2 = _interopRequireDefault(_showSaveAsNewFileDialog);
 
@@ -108,42 +108,19 @@ var _createFileManager = __webpack_require__(82);
 
 var _createFileManager2 = _interopRequireDefault(_createFileManager);
 
+var _showOpenFileDialog = __webpack_require__(85);
+
+var _showOpenFileDialog2 = _interopRequireDefault(_showOpenFileDialog);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mainWindow = null;
 var fileManager = null;
 
-function openFile() {
-  console.log('openFile');
-}
-
-function saveFile() {
-  console.log('saveFile');
-}
-
-function saveAsNewFile() {
-  console.log('saveAsNewFile');
-}
-
-function exportPDF() {
-  console.log('exportPDF');
-}
-
-function saveAsNewFile() {
-  Promise.all([(0, _showSaveAsNewFileDialog2.default)(), mainWindow.requestText()]).then(function (_ref) {
-    var _ref2 = _slicedToArray(_ref, 2),
-        filePath = _ref2[0],
-        text = _ref2[1];
-
-    fileManager.saveFile(filePath, text);
-  }).catch(function (error) {
-    console.log(error);
-  });
-}
-
 _electron.app.on('ready', function () {
   mainWindow = (0, _createMainWindow2.default)();
   fileManager = (0, _createFileManager2.default)();
+
   (0, _setAppMenu2.default)({
     openFile: openFile,
     saveFile: saveFile,
@@ -164,6 +141,38 @@ _electron.app.on('activate', function (_, hasVisibleWindow) {
   }
 });
 
+function openFile() {
+  if (_electron.app.isReady()) {
+    (0, _showOpenFileDialog2.default)().then(function (filePath) {
+      fileManager.readFile(filePath);
+    }).then(function (text) {
+      mainWindow.sendText(text);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+}
+
+function saveFile() {
+  console.log('saveFile');
+}
+
+function saveAsNewFile() {
+  Promise.all([(0, _showSaveAsNewFileDialog2.default)(), mainWindow.requestText()]).then(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+        filePath = _ref2[0],
+        text = _ref2[1];
+
+    return fileManager.saveFile(filePath, text);
+  }).catch(function (error) {
+    console.log(error);
+  });
+}
+
+function exportPDF() {
+  console.log('exportPDF');
+}
+
 /***/ }),
 
 /***/ 82:
@@ -178,7 +187,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _fs = __webpack_require__(193);
+var _fs = __webpack_require__(194);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -197,6 +206,18 @@ var FileManager = function () {
       return new Promise(resolve, function () {
         _fs2.default.writeFileSync(filePath, text);
         resolve();
+      }).catch(function (error) {
+        return console.log(error);
+      });
+    }
+  }, {
+    key: 'readFile',
+    value: function readFile(filePath) {
+      return new Promise(function (resolve) {
+        var text = _fs2.default.readFileSync(filePath, 'utf8');
+        resolve(text);
+      }).catch(function (error) {
+        return console.log(error);
       });
     }
   }]);
@@ -224,7 +245,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _electron = __webpack_require__(16);
+var _electron = __webpack_require__(13);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -255,7 +276,14 @@ var MainWindow = function () {
         _electron.ipcMain.once('REPLY_TEXT', function (_, text) {
           return resolve(text);
         });
+      }).catch(function (error) {
+        return console.log(error);
       });
+    }
+  }, {
+    key: 'sendText',
+    value: function sendText(text) {
+      this.window.webContents.send('SEND_TEXT', text);
     }
   }]);
 
@@ -280,7 +308,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _electron = __webpack_require__(16);
+var _electron = __webpack_require__(13);
 
 function setAppMenu(options) {
   var template = [{
@@ -367,7 +395,44 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _electron = __webpack_require__(16);
+var _electron = __webpack_require__(13);
+
+function showOpenFileDialog() {
+  return new Promise(function (resolve, reject) {
+    var files = _electron.dialog.showOpenDialog({
+      title: 'open',
+      properties: ['openFile'],
+      filters: [{
+        name: 'markdown file',
+        extensions: ['md']
+      }]
+    });
+
+    if (files && files.length > 0) {
+      resolve(files[0]);
+    } else {
+      reject();
+    }
+  }).catch(function (error) {
+    return console.log(error);
+  });
+}
+
+exports.default = showOpenFileDialog();
+
+/***/ }),
+
+/***/ 86:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _electron = __webpack_require__(13);
 
 function showSaveAsNewFileDialog() {
   return new Promise(function (resolve, reject) {
@@ -384,6 +449,8 @@ function showSaveAsNewFileDialog() {
     } else {
       reject();
     }
+  }).catch(function (error) {
+    return console.log(error);
   });
 }
 

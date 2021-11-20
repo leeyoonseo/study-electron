@@ -17,6 +17,12 @@ class MarkdownEditorUI extends Component {
     ipcRenderer.on('REQUEST_TEXT', () => {
       ipcRenderer.send('RETRY_TEXT', this.state.text);
     });
+
+    ipcRenderer.on('SEND_TEXT', (_, text) => {
+      this.setState({
+        text
+      });
+    });
   }
 
   componentWillUnmount() {
