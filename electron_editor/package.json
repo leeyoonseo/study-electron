@@ -2,8 +2,9 @@
   "name": "electron_editor",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main/index.js",
   "scripts": {
+    "dev": "./node_modules/.bin/electron .",
     "build": "./node_modules/.bin/webpack"
   },
   "author": "",
