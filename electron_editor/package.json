@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/main/index.js",
   "scripts": {
-    "dev": "./node_modules/.bin/electron .",
-    "build": "./node_modules/.bin/webpack"
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "electron ."
   },
   "author": "",
   "license": "ISC",
