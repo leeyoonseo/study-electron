@@ -8,28 +8,20 @@ function setAppMenu(options) {
         { 
           label: 'Open', 
           accelerator: 'CmdOrCtrl+O', 
-          click: () => {
-            options.openFile();
-          }
+          click: () =>  options.openFile()
         },
         {
           label: 'Save', 
           accelerator: 'CmdOrCtrl+S', 
-          click: () => {
-            options.saveFile();
-          }
+          click: () => options.saveFile()
         },
         {
           label: 'Save As...', 
-          click: () => {
-            options.saveAsNewFile();
-          }
+          click: () => options.saveAsNewFile()
         },
         {
           label: 'Export PDF', 
-          click: () => {
-            options.exportPDF();
-          }
+          click: () => options.exportPDF()
         }
       ]
     }, 
@@ -64,9 +56,7 @@ function setAppMenu(options) {
         {
           label: 'Toggle DevTools', 
           accelerator: 'Alt+Command+I', 
-          click: () => {
-            BrowserWindow.getFocusedWindow().toggleDevTools();
-          }
+          click: () => BrowserWindow.getFocusedWindow().toggleDevTools()
         },
       ]  
     },
@@ -80,14 +70,13 @@ function setAppMenu(options) {
           {
             label: 'Quit',
             accelerator: 'CmdOrCtrl+Q',
-            click: () => {
-              app.quit()
-            }
+            click: () => app.quit()
           }
         ]
       }
     );
   }
+
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 

@@ -1,8 +1,8 @@
 import { app } from 'electron';
 import createMainWindow from './createMainWindow';
 import setAppMenu from './setAppMenu';
-import showSaveAsNewFileDialog from './showSaveAsNewFileDialog';
 import createFileManager from './createFileManager';
+import showSaveAsNewFileDialog from './showSaveAsNewFileDialog';
 import showOpenFileDialog from './showOpenFileDialog';
 
 let mainWindow = null;
