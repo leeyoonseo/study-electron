@@ -1,4 +1,4 @@
-import { desktopCapturer, screen } from 'electron';
+import { ipcRenderer, desktopCapturer, screen } from 'electron';
 
 function getDesktopVideoStream(sourceDisplay) {
   return new Promise((resolve, reject) => {
@@ -84,18 +84,26 @@ const sourceDisplay = screen.getPrimaryDisplay();
 sourceDisplay.name = 'Screen 1';
 const trimmedBounds = { x: 100, y: 100, width: 300, height: 300 };
 
+ipcRenderer.on('CAPTURE', (_, { sourceDisplay, trimmedBounds }) => {
+  getDesktopVideoStream(screen.getPrimaryDisplay()).then(stream => {
+    // 추출한 스트림을 객체 URL로 변환
+    const videoElement = document.createElement('video');
+    videoElement.src = URL.createObjectURL(stream);
+    videoElement.play();
+    videoElement.addEventListener('loadedmetadata', () => {
+      // 비디오 요소에서 이미지 데이터 추출
+      const dataURL = getCaptureImage({ videoElement, trimmedBounds, sourceDisplay });
 
-getDesktopVideoStream(screen.getPrimaryDisplay()).then(stream => {
-  const videoElement = document.createElement('video');
-  // 추출한 스트림을 객체 URL로 변환
-  videoElement.src = URL.createObjectURL(stream);
-  videoElement.play();
-  videoElement.addEventListener('loadedmetadata', () => {
-    // 비디오 요소에서 이미지 데이터 추출
-    const dataURL = getCaptureImage({ videoElement, trimmedBounds, sourceDisplay });
-    const imgElement = document.createElement('img');
-    imgElement.src = dataURL;
-    document.querySelector('body').appendChild(imgElement);
+      // Main 프로세스로 이미지 데이터 추출
+      ipcRenderer.send('REPLY_CAPTURE', { dataURL });
+      videoElement.pause();
+      
+      // 객체 url 파기
+      URL.revokeObjectURL(dataURL);
+    });
   })
+  .catch(error => {
+    ipcRenderer.send('REPLY_CAPTURE', { error });
+  });
 });
 
