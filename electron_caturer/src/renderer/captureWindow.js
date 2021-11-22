@@ -36,16 +36,66 @@ function getDesktopVideoStream(sourceDisplay) {
       }, resolve, reject);
     });
   });
+
+
+
+}
+
+function getCaptureImage({ videoElement, trimmedBounds, sourceDisplay }) {
+  // 비디오 요소 너비, 높이 추출
+  const { videoWidth, videoHeight } = videoElement;
+  // 캡쳐 대상 출력 배율 추출
+  const s = sourceDisplay.scaleFactor || 1;
+
+  // 비디오 요소 내부 데스크톱 이미지 여백 크기 산출
+  const blankWidth = Math.max((videoWidth - sourceDisplay.bounds.width * s) / 2, 0);
+  const blankHeight = Math.max((videoHeight - sourceDisplay.bounds.height * s) / 2, 0);
+
+  // 비디오 요소 내부의 대상 영역의 위치(x, y 좌표) 산출
+  const offsetX = (trimmedBounds.x - sourceDisplay.bounds.x) * s + blankWidth;
+  const offsetY = (trimmedBounds.y - sourceDisplay.bounds.y) * s + blankHeight;
+
+  // canvas 요소 만들기
+  const canvasElement = document.createElement('canvas');
+  const context = canvasElement.getContext('2d');
+
+  // 자를 대상 영역의 너비와 높이를 canvas 요소에 설정
+  canvasElement.width = trimmedBounds.width;
+  canvasElement.height = trimmedBounds.height;
+
+  // canvas 요소에 video 요소 내용 렌더링
+  context.drawImage(
+    videoElement,
+    offsetX,
+    offsetY,
+    trimmedBounds.width * s,
+    trimmedBounds.height * s,
+    0,
+    0,
+    trimmedBounds.width,
+    trimmedBounds.height
+  );
+
+  // canvas 요소에서 이미지 데이터 추출
+  return canvasElement.toDataURL('image/png');
 }
 
 const sourceDisplay = screen.getPrimaryDisplay();
 sourceDisplay.name = 'Screen 1';
+const trimmedBounds = { x: 100, y: 100, width: 300, height: 300 };
 
-getDesktopVideoStream(sourceDisplay).then(stream => {
+
+getDesktopVideoStream(screen.getPrimaryDisplay()).then(stream => {
   const videoElement = document.createElement('video');
   // 추출한 스트림을 객체 URL로 변환
   videoElement.src = URL.createObjectURL(stream);
   videoElement.play();
-  document.querySelector('body').appendChild(videoElement);
+  videoElement.addEventListener('loadedmetadata', () => {
+    // 비디오 요소에서 이미지 데이터 추출
+    const dataURL = getCaptureImage({ videoElement, trimmedBounds, sourceDisplay });
+    const imgElement = document.createElement('img');
+    imgElement.src = dataURL;
+    document.querySelector('body').appendChild(imgElement);
+  })
 });
 
