@@ -21,4 +21,4 @@ function showOpenFileDialog() {
   }).catch(error => console.log(error));
 }
 
-export default showOpenFileDialog();
+export default showOpenFileDialog;
