@@ -28,6 +28,7 @@ describe('에디터 입력 테스트', function () {
     it('html이 렌더링 되었습니다.', function () {
       const page = new EditorPage(app.client);
       return page.inputText('# h1 제목 \n ## h2 제목')
+        .then(() => page.getRenderedHTML())
         .then(html => {
           const dom = jsdom(html);
           const h1 = dom.querySelector('h1');
