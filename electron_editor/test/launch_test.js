@@ -1,22 +1,15 @@
-const Application = require('spectron').Application;
-const electron = require('electron');
-const path = require('path');
 const assert = require('assert');
+const createApplication = require('./createApplication');
 
-const app = new Application({
-  path: electron,
-  args: [path.join(__dirname, '..')]
-});
-
-// this.timeout을 위해 arrow function 사용x
 describe('애플리케이션 실행 테스트', function () {
-  this.timeout(10000); // 10초 넘으면 테스트 실패
+  this.timeout(10000);
+  let app;
 
-  beforeEach(function () {
+  beforeEach(() => {
+    app = createApplication();
     return app.start();
   });
-
-  afterEach(function () {
+  afterEach(() => {
     return app.stop();
   });
 
