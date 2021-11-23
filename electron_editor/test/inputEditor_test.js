@@ -28,4 +28,13 @@ describe('에디터 입력 테스트', function () {
         });
     });
   });
+
+  describe('이모티콘 입력하기', function () {
+    it('이모트콘 PNG 이미지가 렌더링 되었습니다.', function () {
+      const page = new EditorPage(app.client);
+      return page.inputText(':tada:')
+        .then(() => page.findEmojiElement('tada'))
+        .then(element => assert(!!element));
+    })
+  })
 });
