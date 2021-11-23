@@ -1,7 +1,8 @@
 const assert = require('assert');
+const jsdom = require('jsdom').jsdom;
 const createApplication = require('./createApplication');
 const EditorPage = require('./editor.page');
-const jsdom = require('jsdom').jsdom;
+const { capturePage, reportLog } = require('./helper');
 
 describe('에디터 입력 테스트', function () {
   this.timeout(10000);
@@ -11,7 +12,15 @@ describe('에디터 입력 테스트', function () {
     app = createApplication();
     return app.start();
   });
-  afterEach(() => {
+
+  afterEach(function () {
+    if (this.currentTest.state === 'failed') {
+      return Promise.all([
+        capturePage(app, this.currentTest.title),
+        reportLog(app, this.currentTest.title)
+      ]).then(() => app.stop());
+    }
+
     return app.stop();
   });
 

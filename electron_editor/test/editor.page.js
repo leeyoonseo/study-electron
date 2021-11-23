@@ -19,7 +19,7 @@ module.exports = class EditorPage {
     return this.client.waitForExist('#previewer')
       .then(() => {
         const src = emojione.imagePathPNG + emojione.emojioneList[`:${emojiName}:`].unicode;
-        return this.client.getHTML(`#previewer img[src^=${src}.png]`);
+        return this.client.getHTML(`#previewer img[src^='${src}.png']`);
       });
   }
 }
