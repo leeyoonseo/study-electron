@@ -1,8 +1,8 @@
 {
   "name": "electron_chat",
   "version": "1.0.0",
-  "description": "",
-  "main": ".tmp/main/index.js",
+  "description": "Electron Chat",
+  "main": "js/main/index.js",
   "dependencies": {
     "electron": "^1.6.1",
     "firebase": "^3.6.4",
@@ -13,14 +13,20 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0"
+    "babel-preset-react": "^6.16.0",
+    "cpx": "^1.3.1",
+    "webpack": "^2.2.0"
   },
   "scripts": {
-    "build": "./node_modules/.bin/babel --out-dir .tmp src --watch",
-    "start": "./node_modules/.bin/electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "copy:resources": "cpx \"prod_resources/**/*\" dist",
+    "copy:photon": "cpx \"node_modules/photon/dist/css/**/*\" dist/css && cpx \"node_modules/photon/dist/fonts/**/*\" dist/fonts",
+    "prebundle": "npm run copy:resources && npm run copy:photon",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "start": "electron dist"
   },
-  "author": "",
+  "author": "okayoon",
   "license": "ISC"
 }
